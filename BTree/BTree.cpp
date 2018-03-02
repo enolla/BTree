@@ -16,7 +16,7 @@ int BTree<T>::getDepth()
 
 
 template <class T>
-int BTree::recDepth(node* currentNode)
+int BTree<T>::recDepth(node* currentNode)
 {
     if (!currentNode->left && !currentNode->right)
     {
@@ -24,8 +24,20 @@ int BTree::recDepth(node* currentNode)
     }
     else
     {
-        int leftDepth = recDepth(currentNode->left);
-        int rightDepth = recDepth(currentNode->right);
+        int leftDepth = 0;
+        int rightDepth = 0;
+
+        if (currentNode->left)
+        {
+            leftDepth = recDepth(currentNode->left) + 1;
+        }
+
+        if (currentNode->right)
+        {
+            rightDepth = recDepth(currentNode->right) + 1;
+        }
+
+        return MAX(leftDepth, rightDepth);
 
     }
 
@@ -33,7 +45,7 @@ int BTree::recDepth(node* currentNode)
 }
 
 template <class T>
-void BTree::insert(T data)
+void BTree<T>::insert(T data)
 {
     node* insertNode = new node(data);
 
@@ -48,13 +60,31 @@ void BTree::insert(T data)
 }
 
 template <class T>
-void BTree::recInsert(node* insertNode, node* currentNode)
+void BTree<T>::recInsert(node* insertNode, node* currentNode)
 {
     insertNode->parent = currentNode;
 
     if (insertNode->data < currentNode->data)
     {
-
+        if (!currentNode->left)
+        {
+            currentNode->left = insertNode;
+        }
+        else
+        {
+            recInsert(insertNode, currentNode->left);
+        }
+    }
+    else
+    {
+        if (!currentNode->right)
+        {
+            currentNode->right = insertNode;
+        }
+        else
+        {
+            recInsert(insertNode, currentNode->right);
+        }
     }
 }
 
@@ -62,4 +92,52 @@ void BTree::recInsert(node* insertNode, node* currentNode)
 template<class T>
 void BTree<T>::clearTree()
 {
+    recClearTree(root_);
 }
+
+
+template<class T>
+void BTree<T>::recClearTree(node* currentNode)
+{
+    if (currentNode->left)
+    {
+        recClearTree(currentNode->left);
+    }
+
+    if (currentNode->right)
+    {
+        recClearTree(currentNode->right);
+    }
+
+    delete currentNode;
+
+}
+
+
+
+template<class T>
+void BTree<T>::printTree()
+{
+    recPrint(root_);
+}
+
+
+template<class T>
+void BTree<T>::recPrint(node* currentNode)
+{
+
+    if (currentNode->left)
+    {
+        recPrint(currentNode->left);
+    }
+
+    std::cout << currentNode->data << std::endl;
+
+    if (currentNode->right)
+    {
+        recPrint(currentNode->right);
+    }
+    
+}
+
+

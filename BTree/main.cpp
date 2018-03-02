@@ -1,13 +1,34 @@
-#include <iostream>
 #include <Windows.h>
-#include "BTree.h"
-
+#include <iostream>
+#include "BTree.cpp"
+#include <vector>
 
 
 int main()
 {
-    std::cout << 4 << std::endl;
 
+    
+    std::vector<int> myints;
+    myints.push_back(6);
+    myints.push_back(31432795);
+    myints.push_back(1);
+    myints.push_back(3);
+    myints.push_back(10);
+    myints.push_back(3);
+    myints.push_back(5);
+
+    BTree<int> myTree;
+    
+    for (unsigned i = 0; i < myints.size(); ++i)
+    {
+        myTree.insert(myints[i]);
+    }
+
+
+    myTree.printTree();
+
+    std::cout << myTree.getDepth() << std::endl;
+    
 
     system("pause");
     return 0;
