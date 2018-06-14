@@ -7,7 +7,7 @@
 int main()
 {
 
-    
+
     std::vector<int> myints;
     myints.push_back(6);
     myints.push_back(31432795);
@@ -18,17 +18,21 @@ int main()
     myints.push_back(5);
 
     BTree<int> myTree;
-    
+
     for (unsigned i = 0; i < myints.size(); ++i)
     {
         myTree.insert(myints[i]);
     }
 
+    BTree<int>::node* lca = myTree.LCA(1, 3);
+
+    std::cout << lca->data << std::endl;
+
 
     myTree.printTree();
 
     std::cout << myTree.getDepth() << std::endl;
-    
+
 
     system("pause");
     return 0;
